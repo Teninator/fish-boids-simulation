@@ -1,0 +1,21 @@
+#version 410 core
+layout (triangles, equal_spacing, ccw) in;
+in vec3 vPos[]; 
+uniform mat4 model, view, projection;
+uniform bool isShark, isFish;
+uniform float time;
+
+void main() {
+    vec3 pos = gl_TessCoord.x * vPos[0] + gl_TessCoord.y * vPos[1] + gl_TessCoord.z * vPos[2];
+
+    if (isShark) {
+        float headLock = smoothstep(1.0, -1.2, pos.z);
+        pos.x += sin(pos.z * 0.6 + time * 3.5) * 0.25 * headLock;
+    } 
+    else if (isFish) {
+        float headLock = smoothstep(0.4, -0.5, pos.z);
+        pos.x += sin(pos.z * 2.8 + time * 8.0) * 0.15 * headLock;
+    }
+
+    gl_Position = projection * view * model * vec4(pos, 1.0);
+}

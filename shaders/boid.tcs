@@ -1,0 +1,35 @@
+#version 410 core
+
+layout (vertices = 3) out;
+
+in vec3 FragPos[]; 
+out vec3 vPos[]; 
+
+uniform bool isShark;
+uniform bool isFish;
+
+void main() {
+    vPos[gl_InvocationID] = FragPos[gl_InvocationID];
+
+    if (gl_InvocationID == 0) {
+        if (isShark) {
+            gl_TessLevelInner[0] = 4.0;
+            gl_TessLevelOuter[0] = 4.0;
+            gl_TessLevelOuter[1] = 4.0;
+            gl_TessLevelOuter[2] = 4.0;
+        } 
+        else if (isFish) {
+            gl_TessLevelInner[0] = 4.0;
+            gl_TessLevelOuter[0] = 3.0;
+            gl_TessLevelOuter[1] = 3.0;
+            gl_TessLevelOuter[2] = 3.0;
+        }
+        else {
+            // Static objects (corals/bubbles)
+            gl_TessLevelInner[0] = 1.0;
+            gl_TessLevelOuter[0] = 1.0;
+            gl_TessLevelOuter[1] = 1.0;
+            gl_TessLevelOuter[2] = 1.0;
+        }
+    }
+}
